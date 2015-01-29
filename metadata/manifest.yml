@@ -1,14 +1,14 @@
 Name: wildfly
 Cartridge-Short-Name: WILDFLY
-Display-Name: WildFly Application Server 8.2.0.Final
-Description: "The leading open source Java EE7 application server for enterprise Java applications. Popular development frameworks include CDI, DeltaSpike and Spring"
+Display-Name: Keycloak 1.1.0.Final
+Description: "Authentication and Authorization Server."
 Version: '8'
 Source-Url: https://github.com/openshift-cartridges/openshift-wildfly-cartridge/archive/wildfly-8.zip
 License: LGPL
 License-Url: http://www.gnu.org/copyleft/lesser.txt
-Vendor: JBoss
+Vendor: WildFly
 Cartridge-Version: '0.0.6'
-Cartridge-Vendor: jboss
+Cartridge-Vendor: wildfly
 Categories:
   - service
   - web_framework

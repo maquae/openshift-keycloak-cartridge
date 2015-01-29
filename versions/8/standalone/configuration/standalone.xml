@@ -29,6 +29,7 @@
         <extension module="org.wildfly.extension.batch"/>
         <extension module="org.wildfly.extension.io"/>
         <extension module="org.wildfly.extension.undertow"/>
+        <extension module="org.keycloak.keycloak-wildfly-subsystem"/>
     </extensions>
     <management>
         <security-realms>
@@ -140,6 +141,14 @@
             <datasources>
                 <datasource jndi-name="java:jboss/datasources/ExampleDS" pool-name="ExampleDS" enabled="true" use-java-context="true">
                     <connection-url>jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE</connection-url>
+                    <driver>h2</driver>
+                    <security>
+                        <user-name>sa</user-name>
+                        <password>sa</password>
+                    </security>
+                </datasource>
+                <datasource jndi-name="java:jboss/datasources/KeycloakDS" pool-name="KeycloakDS" enabled="true" use-java-context="true">
+                    <connection-url>jdbc:h2:${jboss.server.data.dir}/keycloak;AUTO_SERVER=TRUE</connection-url>
                     <driver>h2</driver>
                     <security>
                         <user-name>sa</user-name>
@@ -483,6 +492,11 @@
                         <policy-module code="Delegating" flag="required"/>
                     </authorization>
                 </security-domain>
+                <security-domain name="keycloak">
+                    <authentication>
+                        <login-module code="org.keycloak.adapters.jboss.KeycloakLoginModule" flag="required"/>
+                    </authentication>
+                </security-domain>
             </security-domains>
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:transactions:2.0">
@@ -496,7 +510,7 @@
         <subsystem xmlns="urn:jboss:domain:undertow:1.2">
             <buffer-cache name="default"/>
             <server name="default-server">
-                <http-listener name="default" socket-binding="http" proxy-address-forwarding="true"/>
+                <http-listener name="default" socket-binding="http" proxy-address-forwarding="true" redirect-socket="proxy-https"/>
                 <host name="default-host" alias="localhost">
                     <location name="/" handler="welcome-content"/>
                     <filter-ref name="server-header"/>
@@ -526,6 +540,7 @@
             <client-config name="Standard-Client-Config"/>
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:weld:2.0"/>
+        <subsystem xmlns="urn:jboss:domain:keycloak:1.0"/>
     </profile>
     <interfaces>
         <interface name="management">
@@ -550,6 +565,7 @@
         <socket-binding name="ajp" port="${jboss.ajp.port:8009}"/>
         <socket-binding name="http" port="${jboss.http.port:8080}"/>
         <socket-binding name="https" port="${jboss.https.port:8443}"/>
+        <socket-binding name="proxy-https" port="443"/>
         <socket-binding name="jacorb" interface="unsecure" port="3528"/>
         <socket-binding name="jacorb-ssl" interface="unsecure" port="3529"/>
         <socket-binding name="txn-recovery-environment" port="4712"/>
