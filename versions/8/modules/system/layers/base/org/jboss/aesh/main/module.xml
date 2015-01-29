@@ -28,7 +28,8 @@
     </properties>
 
     <resources>
-        <resource-root path="aesh-0.33.11.jar"/>
+        <resource-root path="aesh-0.33.12.jar"/>
+        <!-- Insert resources here -->
     </resources>
 
     <dependencies>

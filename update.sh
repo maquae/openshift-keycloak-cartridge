@@ -21,17 +21,12 @@ if [ ! -f "$SRC/standalone/configuration/keycloak-server.json" ]; then
     exit 1
 fi
 
-VERSION=$(ls $SRC/standalone/deployments/auth-server.war/WEB-INF/lib/keycloak-core-*.jar | head -n 1 | sed 's/^.*keycloak-core-//' | sed 's/.jar$//')
+VERSION=$(ls $SRC/modules/system/layers/base/org/keycloak/keycloak-core/main/keycloak-core-*.jar | head -n 1 | sed 's/^.*keycloak-core-//' | sed 's/.jar$//')
 
 rm -rf versions/8/modules/system/layers/base
 rm -rf versions/8/standalone/configuration/themes
-rm -rf versions/8/standalone/deployments/auth*
 
 cp -r $SRC/modules/system/layers/base versions/8/modules/system/layers/
 cp -r $SRC/standalone/configuration/themes versions/8/standalone/configuration/
-cp -r $SRC/standalone/deployments/auth* versions/8/standalone/deployments/
-
-sed -i 's|<!--||g' versions/8/standalone/deployments/auth-server.war/WEB-INF/web.xml
-sed -i 's|-->||g' versions/8/standalone/deployments/auth-server.war/WEB-INF/web.xml
 
 sed -i "s/Display-Name: Keycloak .*/Display-Name: Keycloak $VERSION/" metadata/manifest.yml
