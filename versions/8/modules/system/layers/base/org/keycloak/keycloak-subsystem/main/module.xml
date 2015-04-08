@@ -24,13 +24,13 @@
 
 <module xmlns="urn:jboss:module:1.1" name="org.keycloak.keycloak-subsystem">
     <properties>
-        <property name="keycloak-version" value="1.1.0.Final"/>
+        <property name="keycloak-version" value="1.2.0.Beta1"/>
         <property name="auth-server-exploded" value="false"/>
     </properties>
 
     <resources>
         <resource-root path="."/>
-        <resource-root path="keycloak-subsystem-1.1.0.Final.jar"/>
+        <resource-root path="keycloak-subsystem-1.2.0.Beta1.jar"/>
         <!-- Insert resources here -->
     </resources>
 

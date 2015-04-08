@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+
+<module xmlns="urn:jboss:module:1.1" name="com.google.zxing.javase">
+    <resources>
+        <resource-root path="javase-2.2.jar"/>
+        <!-- Insert resources here -->
+    </resources>
+    <dependencies>
+        <module name="com.google.zxing.core"/>
+        <module name="javax.api"/>
+    </dependencies>
+
+</module>
