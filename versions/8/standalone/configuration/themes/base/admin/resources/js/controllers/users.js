@@ -1,17 +1,17 @@
-module.controller('UserRoleMappingCtrl', function($scope, $http, realm, user, applications, Notifications, RealmRoleMapping,
-                                                  ApplicationRoleMapping, AvailableRealmRoleMapping, AvailableApplicationRoleMapping,
-                                                  CompositeRealmRoleMapping, CompositeApplicationRoleMapping) {
+module.controller('UserRoleMappingCtrl', function($scope, $http, realm, user, clients, Notifications, RealmRoleMapping,
+                                                  ClientRoleMapping, AvailableRealmRoleMapping, AvailableClientRoleMapping,
+                                                  CompositeRealmRoleMapping, CompositeClientRoleMapping) {
     $scope.realm = realm;
     $scope.user = user;
     $scope.selectedRealmRoles = [];
     $scope.selectedRealmMappings = [];
     $scope.realmMappings = [];
-    $scope.applications = applications;
-    $scope.applicationRoles = [];
-    $scope.applicationComposite = [];
-    $scope.selectedApplicationRoles = [];
-    $scope.selectedApplicationMappings = [];
-    $scope.applicationMappings = [];
+    $scope.clients = clients;
+    $scope.clientRoles = [];
+    $scope.clientComposite = [];
+    $scope.selectedClientRoles = [];
+    $scope.selectedClientMappings = [];
+    $scope.clientMappings = [];
     $scope.dummymodel = [];
 
     $scope.realmMappings = RealmRoleMapping.query({realm : realm.realm, userId : user.username});
@@ -26,13 +26,13 @@ module.controller('UserRoleMappingCtrl', function($scope, $http, realm, user, ap
                 $scope.realmComposite = CompositeRealmRoleMapping.query({realm : realm.realm, userId : user.username});
                 $scope.selectedRealmMappings = [];
                 $scope.selectRealmRoles = [];
-                if ($scope.application) {
+                if ($scope.client) {
                     console.log('load available');
-                    $scope.applicationComposite = CompositeApplicationRoleMapping.query({realm : realm.realm, userId : user.username, application : $scope.application.id});
-                    $scope.applicationRoles = AvailableApplicationRoleMapping.query({realm : realm.realm, userId : user.username, application : $scope.application.id});
-                    $scope.applicationMappings = ApplicationRoleMapping.query({realm : realm.realm, userId : user.username, application : $scope.application.id});
-                    $scope.selectedApplicationRoles = [];
-                    $scope.selectedApplicationMappings = [];
+                    $scope.clientComposite = CompositeClientRoleMapping.query({realm : realm.realm, userId : user.username, client : $scope.client.id});
+                    $scope.clientRoles = AvailableClientRoleMapping.query({realm : realm.realm, userId : user.username, client : $scope.client.id});
+                    $scope.clientMappings = ClientRoleMapping.query({realm : realm.realm, userId : user.username, client : $scope.client.id});
+                    $scope.selectedClientRoles = [];
+                    $scope.selectedClientMappings = [];
                 }
                 Notifications.success("Role mappings updated.");
 
@@ -47,57 +47,57 @@ module.controller('UserRoleMappingCtrl', function($scope, $http, realm, user, ap
                 $scope.realmComposite = CompositeRealmRoleMapping.query({realm : realm.realm, userId : user.username});
                 $scope.selectedRealmMappings = [];
                 $scope.selectRealmRoles = [];
-                if ($scope.application) {
+                if ($scope.client) {
                     console.log('load available');
-                    $scope.applicationComposite = CompositeApplicationRoleMapping.query({realm : realm.realm, userId : user.username, application : $scope.application.id});
-                    $scope.applicationRoles = AvailableApplicationRoleMapping.query({realm : realm.realm, userId : user.username, application : $scope.application.id});
-                    $scope.applicationMappings = ApplicationRoleMapping.query({realm : realm.realm, userId : user.username, application : $scope.application.id});
-                    $scope.selectedApplicationRoles = [];
-                    $scope.selectedApplicationMappings = [];
+                    $scope.clientComposite = CompositeClientRoleMapping.query({realm : realm.realm, userId : user.username, client : $scope.client.id});
+                    $scope.clientRoles = AvailableClientRoleMapping.query({realm : realm.realm, userId : user.username, client : $scope.client.id});
+                    $scope.clientMappings = ClientRoleMapping.query({realm : realm.realm, userId : user.username, client : $scope.client.id});
+                    $scope.selectedClientRoles = [];
+                    $scope.selectedClientMappings = [];
                 }
                 Notifications.success("Role mappings updated.");
             });
     };
 
-    $scope.addApplicationRole = function() {
-        $http.post(authUrl + '/admin/realms/' + realm.realm + '/users/' + user.username + '/role-mappings/applications-by-id/' + $scope.application.id,
-                $scope.selectedApplicationRoles).success(function() {
-                $scope.applicationMappings = ApplicationRoleMapping.query({realm : realm.realm, userId : user.username, application : $scope.application.id});
-                $scope.applicationRoles = AvailableApplicationRoleMapping.query({realm : realm.realm, userId : user.username, application : $scope.application.id});
-                $scope.applicationComposite = CompositeApplicationRoleMapping.query({realm : realm.realm, userId : user.username, application : $scope.application.id});
-                $scope.selectedApplicationRoles = [];
-                $scope.selectedApplicationMappings = [];
+    $scope.addClientRole = function() {
+        $http.post(authUrl + '/admin/realms/' + realm.realm + '/users/' + user.username + '/role-mappings/clients-by-id/' + $scope.client.id,
+                $scope.selectedClientRoles).success(function() {
+                $scope.clientMappings = ClientRoleMapping.query({realm : realm.realm, userId : user.username, client : $scope.client.id});
+                $scope.clientRoles = AvailableClientRoleMapping.query({realm : realm.realm, userId : user.username, client : $scope.client.id});
+                $scope.clientComposite = CompositeClientRoleMapping.query({realm : realm.realm, userId : user.username, client : $scope.client.id});
+                $scope.selectedClientRoles = [];
+                $scope.selectedClientMappings = [];
                 Notifications.success("Role mappings updated.");
             });
     };
 
-    $scope.deleteApplicationRole = function() {
-        $http.delete(authUrl + '/admin/realms/' + realm.realm + '/users/' + user.username + '/role-mappings/applications-by-id/' + $scope.application.id,
-            {data : $scope.selectedApplicationMappings, headers : {"content-type" : "application/json"}}).success(function() {
-                $scope.applicationMappings = ApplicationRoleMapping.query({realm : realm.realm, userId : user.username, application : $scope.application.id});
-                $scope.applicationRoles = AvailableApplicationRoleMapping.query({realm : realm.realm, userId : user.username, application : $scope.application.id});
-                $scope.applicationComposite = CompositeApplicationRoleMapping.query({realm : realm.realm, userId : user.username, application : $scope.application.id});
-                $scope.selectedApplicationRoles = [];
-                $scope.selectedApplicationMappings = [];
+    $scope.deleteClientRole = function() {
+        $http.delete(authUrl + '/admin/realms/' + realm.realm + '/users/' + user.username + '/role-mappings/clients-by-id/' + $scope.client.id,
+            {data : $scope.selectedClientMappings, headers : {"content-type" : "application/json"}}).success(function() {
+                $scope.clientMappings = ClientRoleMapping.query({realm : realm.realm, userId : user.username, client : $scope.client.id});
+                $scope.clientRoles = AvailableClientRoleMapping.query({realm : realm.realm, userId : user.username, client : $scope.client.id});
+                $scope.clientComposite = CompositeClientRoleMapping.query({realm : realm.realm, userId : user.username, client : $scope.client.id});
+                $scope.selectedClientRoles = [];
+                $scope.selectedClientMappings = [];
                 Notifications.success("Role mappings updated.");
             });
     };
 
 
-    $scope.changeApplication = function() {
-        console.log('changeApplication');
-        if ($scope.application) {
+    $scope.changeClient = function() {
+        console.log('changeClient');
+        if ($scope.client) {
             console.log('load available');
-            $scope.applicationComposite = CompositeApplicationRoleMapping.query({realm : realm.realm, userId : user.username, application : $scope.application.id});
-            $scope.applicationRoles = AvailableApplicationRoleMapping.query({realm : realm.realm, userId : user.username, application : $scope.application.id});
-            $scope.applicationMappings = ApplicationRoleMapping.query({realm : realm.realm, userId : user.username, application : $scope.application.id});
+            $scope.clientComposite = CompositeClientRoleMapping.query({realm : realm.realm, userId : user.username, client : $scope.client.id});
+            $scope.clientRoles = AvailableClientRoleMapping.query({realm : realm.realm, userId : user.username, client : $scope.client.id});
+            $scope.clientMappings = ClientRoleMapping.query({realm : realm.realm, userId : user.username, client : $scope.client.id});
         } else {
-            $scope.applicationRoles = null;
-            $scope.applicationMappings = null;
-            $scope.applicationComposite = null;
+            $scope.clientRoles = null;
+            $scope.clientMappings = null;
+            $scope.clientComposite = null;
         }
-        $scope.selectedApplicationRoles = [];
-        $scope.selectedApplicationMappings = [];
+        $scope.selectedClientRoles = [];
+        $scope.selectedClientMappings = [];
     };
 
 
@@ -111,7 +111,7 @@ module.controller('UserSessionsCtrl', function($scope, realm, user, sessions, Us
 
     $scope.logoutAll = function() {
         UserLogout.save({realm : realm.realm, user: user.username}, function () {
-            Notifications.success('Logged out user in all applications');
+            Notifications.success('Logged out user in all clients');
             UserSessions.query({realm: realm.realm, user: user.username}, function(updated) {
                 $scope.sessions = updated;
             })
@@ -133,6 +133,24 @@ module.controller('UserFederatedIdentityCtrl', function($scope, realm, user, fed
     $scope.realm = realm;
     $scope.user = user;
     $scope.federatedIdentities = federatedIdentities;
+});
+
+module.controller('UserConsentsCtrl', function($scope, realm, user, userConsents, UserConsents, Notifications) {
+    $scope.realm = realm;
+    $scope.user = user;
+    $scope.userConsents = userConsents;
+
+    $scope.revokeConsent = function(clientId) {
+        UserConsents.delete({realm : realm.realm, user: user.username, client: clientId }, function () {
+            UserConsents.query({realm: realm.realm, user: user.username}, function(updated) {
+                $scope.userConsents = updated;
+            })
+            Notifications.success('Consent revoked successfully');
+        }, function() {
+            Notifications.error("Consent couldn't be revoked");
+        });
+        console.log("Revoke consent " + clientId);
+    }
 });
 
 
@@ -366,7 +384,7 @@ module.controller('UserFederationCtrl', function($scope, $location, realm, UserF
 
 });
 
-module.controller('GenericUserFederationCtrl', function($scope, $location, Notifications, Dialog, realm, instance, providerFactory, UserFederationInstances, UserFederationSync) {
+module.controller('GenericUserFederationCtrl', function($scope, $location, Notifications, $route, Dialog, realm, instance, providerFactory, UserFederationInstances, UserFederationSync) {
     console.log('GenericUserFederationCtrl');
 
     $scope.create = !instance.providerName;
@@ -435,9 +453,11 @@ module.controller('GenericUserFederationCtrl', function($scope, $location, Notif
     $scope.save = function() {
         $scope.changed = false;
         if ($scope.create) {
-            UserFederationInstances.save({realm: realm.realm}, $scope.instance,  function () {
-                $scope.changed = false;
-                $location.url("/realms/" + realm.realm + "/user-federation");
+            UserFederationInstances.save({realm: realm.realm}, $scope.instance,  function (data, headers) {
+                var l = headers().location;
+                var id = l.substring(l.lastIndexOf("/") + 1);
+
+                $location.url("/realms/" + realm.realm + "/user-federation/providers/" + $scope.instance.providerName + "/" + id);
                 Notifications.success("The provider has been created.");
             });
         } else {
@@ -445,11 +465,9 @@ module.controller('GenericUserFederationCtrl', function($scope, $location, Notif
                     instance: instance.id
                 },
                 $scope.instance,  function () {
-                    $scope.changed = false;
-                    $location.url("/realms/" + realm.realm + "/user-federation");
+                    $route.reload();
                     Notifications.success("The provider has been updated.");
                 });
-
         }
     };
 
@@ -459,7 +477,11 @@ module.controller('GenericUserFederationCtrl', function($scope, $location, Notif
     };
 
     $scope.cancel = function() {
-        $location.url("/realms/" + realm.realm + "/user-federation");
+        if ($scope.create) {
+            $location.url("/realms/" + realm.realm + "/user-federation");
+        } else {
+            $route.reload();
+        }
     };
 
     $scope.remove = function() {
@@ -494,7 +516,7 @@ module.controller('GenericUserFederationCtrl', function($scope, $location, Notif
 });
 
 
-module.controller('LDAPCtrl', function($scope, $location, Notifications, Dialog, realm, instance, UserFederationInstances, UserFederationSync, RealmLDAPConnectionTester) {
+module.controller('LDAPCtrl', function($scope, $location, $route, Notifications, Dialog, realm, instance, UserFederationInstances, UserFederationSync, RealmLDAPConnectionTester) {
     console.log('LDAPCtrl');
     var DEFAULT_BATCH_SIZE = "1000";
 
@@ -547,6 +569,7 @@ module.controller('LDAPCtrl', function($scope, $location, Notifications, Dialog,
         { "id": "ad", "name": "Active Directory" },
         { "id": "rhds", "name": "Red Hat Directory Server" },
         { "id": "tivoli", "name": "Tivoli" },
+        { "id": "edirectory", "name": "Novell eDirectory" },
         { "id": "other", "name": "Other" }
     ];
 
@@ -599,9 +622,11 @@ module.controller('LDAPCtrl', function($scope, $location, Notifications, Dialog,
         }
 
         if ($scope.create) {
-            UserFederationInstances.save({realm: realm.realm}, $scope.instance,  function () {
-                $scope.changed = false;
-                $location.url("/realms/" + realm.realm + "/user-federation");
+            UserFederationInstances.save({realm: realm.realm}, $scope.instance,  function (data, headers) {
+                var l = headers().location;
+                var id = l.substring(l.lastIndexOf("/") + 1);
+
+                $location.url("/realms/" + realm.realm + "/user-federation/providers/" + $scope.instance.providerName + "/" + id);
                 Notifications.success("The provider has been created.");
             });
         } else {
@@ -609,8 +634,7 @@ module.controller('LDAPCtrl', function($scope, $location, Notifications, Dialog,
                                           instance: instance.id
                 },
                 $scope.instance,  function () {
-                $scope.changed = false;
-                $location.url("/realms/" + realm.realm + "/user-federation");
+                $route.reload();
                 Notifications.success("The provider has been updated.");
             });
 
@@ -618,8 +642,7 @@ module.controller('LDAPCtrl', function($scope, $location, Notifications, Dialog,
     };
 
     $scope.reset = function() {
-        initFederationSettings();
-        $scope.instance = angular.copy(instance);
+        $route.reload();
     };
 
     $scope.cancel = function() {

@@ -4,7 +4,7 @@
 
 <module xmlns="urn:jboss:module:1.1" name="org.keycloak.keycloak-forms-common-freemarker">
     <resources>
-        <resource-root path="keycloak-forms-common-freemarker-1.2.0.Beta1.jar"/>
+        <resource-root path="keycloak-forms-common-freemarker-1.2.0.CR1.jar"/>
         <!-- Insert resources here -->
     </resources>
     <dependencies>

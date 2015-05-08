@@ -206,14 +206,66 @@ module.config([ '$routeProvider', function($routeProvider) {
             },
             controller : 'RealmIdentityProviderExportCtrl'
         })
+        .when('/realms/:realm/identity-provider-mappers/:alias/mappers', {
+            templateUrl : function(params){ return resourceUrl + '/partials/identity-provider-mappers.html'; },
+            resolve : {
+                realm : function(RealmLoader) {
+                    return RealmLoader();
+                },
+                identityProvider : function(IdentityProviderLoader) {
+                    return IdentityProviderLoader();
+                },
+                mapperTypes : function(IdentityProviderMapperTypesLoader) {
+                    return IdentityProviderMapperTypesLoader();
+                },
+                mappers : function(IdentityProviderMappersLoader) {
+                    return IdentityProviderMappersLoader();
+                }
+            },
+            controller : 'IdentityProviderMapperListCtrl'
+        })
+        .when('/realms/:realm/identity-provider-mappers/:alias/mappers/:mapperId', {
+            templateUrl : function(params){ return resourceUrl + '/partials/identity-provider-mapper-detail.html'; },
+            resolve : {
+                realm : function(RealmLoader) {
+                    return RealmLoader();
+                },
+                identityProvider : function(IdentityProviderLoader) {
+                    return IdentityProviderLoader();
+                },
+                mapperTypes : function(IdentityProviderMapperTypesLoader) {
+                    return IdentityProviderMapperTypesLoader();
+                },
+                mapper : function(IdentityProviderMapperLoader) {
+                    return IdentityProviderMapperLoader();
+                }
+            },
+            controller : 'IdentityProviderMapperCtrl'
+        })
+        .when('/create/identity-provider-mappers/:realm/:alias', {
+            templateUrl : function(params){ return resourceUrl + '/partials/identity-provider-mapper-detail.html'; },
+            resolve : {
+                realm : function(RealmLoader) {
+                    return RealmLoader();
+                },
+                identityProvider : function(IdentityProviderLoader) {
+                    return IdentityProviderLoader();
+                },
+                mapperTypes : function(IdentityProviderMapperTypesLoader) {
+                    return IdentityProviderMapperTypesLoader();
+                }
+            },
+            controller : 'IdentityProviderMapperCreateCtrl'
+        })
+
         .when('/realms/:realm/default-roles', {
             templateUrl : resourceUrl + '/partials/realm-default-roles.html',
             resolve : {
                 realm : function(RealmLoader) {
                     return RealmLoader();
                 },
-                applications : function(ApplicationListLoader) {
-                    return ApplicationListLoader();
+                clients : function(ClientListLoader) {
+                    return ClientListLoader();
                 },
                 roles : function(RoleListLoader) {
                     return RoleListLoader();
@@ -311,8 +363,8 @@ module.config([ '$routeProvider', function($routeProvider) {
                 user : function(UserLoader) {
                     return UserLoader();
                 },
-                applications : function(ApplicationListLoader) {
-                    return ApplicationListLoader();
+                clients : function(ClientListLoader) {
+                    return ClientListLoader();
                 }
             },
             controller : 'UserRoleMappingCtrl'
@@ -347,6 +399,21 @@ module.config([ '$routeProvider', function($routeProvider) {
             },
             controller : 'UserFederatedIdentityCtrl'
         })
+        .when('/realms/:realm/users/:user/consents', {
+            templateUrl : resourceUrl + '/partials/user-consents.html',
+            resolve : {
+                realm : function(RealmLoader) {
+                    return RealmLoader();
+                },
+                user : function(UserLoader) {
+                    return UserLoader();
+                },
+                userConsents : function(UserConsentsLoader) {
+                    return UserConsentsLoader();
+                }
+            },
+            controller : 'UserConsentsCtrl'
+        })
         .when('/realms/:realm/users', {
             templateUrl : resourceUrl + '/partials/user-list.html',
             resolve : {
@@ -369,8 +436,8 @@ module.config([ '$routeProvider', function($routeProvider) {
                 roles : function(RoleListLoader) {
                     return RoleListLoader();
                 },
-                applications : function(ApplicationListLoader) {
-                    return ApplicationListLoader();
+                clients : function(ClientListLoader) {
+                    return ClientListLoader();
                 }
             },
             controller : 'RoleDetailCtrl'
@@ -387,8 +454,8 @@ module.config([ '$routeProvider', function($routeProvider) {
                 roles : function(RoleListLoader) {
                     return RoleListLoader();
                 },
-                applications : function(ApplicationListLoader) {
-                    return ApplicationListLoader();
+                clients : function(ClientListLoader) {
+                    return ClientListLoader();
                 }
             },
             controller : 'RoleDetailCtrl'
@@ -406,14 +473,14 @@ module.config([ '$routeProvider', function($routeProvider) {
             controller : 'RoleListCtrl'
         })
 
-        .when('/create/role/:realm/applications/:application', {
-            templateUrl : resourceUrl + '/partials/application-role-detail.html',
+        .when('/create/role/:realm/clients/:client', {
+            templateUrl : resourceUrl + '/partials/client-role-detail.html',
             resolve : {
                 realm : function(RealmLoader) {
                     return RealmLoader();
                 },
-                application : function(ApplicationLoader) {
-                    return ApplicationLoader();
+                client : function(ClientLoader) {
+                    return ClientLoader();
                 },
                 role : function() {
                     return {};
@@ -421,56 +488,56 @@ module.config([ '$routeProvider', function($routeProvider) {
                 roles : function(RoleListLoader) {
                     return RoleListLoader();
                 },
-                applications : function(ApplicationListLoader) {
-                    return ApplicationListLoader();
+                clients : function(ClientListLoader) {
+                    return ClientListLoader();
                 }
             },
-            controller : 'ApplicationRoleDetailCtrl'
+            controller : 'ClientRoleDetailCtrl'
         })
-        .when('/realms/:realm/applications/:application/roles/:role', {
-            templateUrl : resourceUrl + '/partials/application-role-detail.html',
+        .when('/realms/:realm/clients/:client/roles/:role', {
+            templateUrl : resourceUrl + '/partials/client-role-detail.html',
             resolve : {
                 realm : function(RealmLoader) {
                     return RealmLoader();
                 },
-                application : function(ApplicationLoader) {
-                    return ApplicationLoader();
+                client : function(ClientLoader) {
+                    return ClientLoader();
                 },
-                role : function(ApplicationRoleLoader) {
-                    return ApplicationRoleLoader();
+                role : function(ClientRoleLoader) {
+                    return ClientRoleLoader();
                 },
                 roles : function(RoleListLoader) {
                     return RoleListLoader();
                 },
-                applications : function(ApplicationListLoader) {
-                    return ApplicationListLoader();
+                clients : function(ClientListLoader) {
+                    return ClientListLoader();
                 }
             },
-            controller : 'ApplicationRoleDetailCtrl'
+            controller : 'ClientRoleDetailCtrl'
         })
-        .when('/realms/:realm/applications/:application/mappers', {
-            templateUrl : resourceUrl + '/partials/application-mappers.html',
+        .when('/realms/:realm/clients/:client/mappers', {
+            templateUrl : resourceUrl + '/partials/client-mappers.html',
             resolve : {
                 realm : function(RealmLoader) {
                     return RealmLoader();
                 },
-                application : function(ApplicationLoader) {
-                    return ApplicationLoader();
+                client : function(ClientLoader) {
+                    return ClientLoader();
                 },
                 serverInfo : function(ServerInfoLoader) {
                     return ServerInfoLoader();
                 }
             },
-            controller : 'ApplicationProtocolMapperListCtrl'
+            controller : 'ClientProtocolMapperListCtrl'
         })
-        .when('/realms/:realm/applications/:application/add-mappers', {
-            templateUrl : resourceUrl + '/partials/application-mappers-add.html',
+        .when('/realms/:realm/clients/:client/add-mappers', {
+            templateUrl : resourceUrl + '/partials/client-mappers-add.html',
             resolve : {
                 realm : function(RealmLoader) {
                     return RealmLoader();
                 },
-                application : function(ApplicationLoader) {
-                    return ApplicationLoader();
+                client : function(ClientLoader) {
+                    return ClientLoader();
                 },
                 serverInfo : function(ServerInfoLoader) {
                     return ServerInfoLoader();
@@ -478,26 +545,26 @@ module.config([ '$routeProvider', function($routeProvider) {
             },
             controller : 'AddBuiltinProtocolMapperCtrl'
         })
-        .when('/realms/:realm/applications/:application/mappers/:id', {
+        .when('/realms/:realm/clients/:client/mappers/:id', {
             templateUrl : resourceUrl + '/partials/protocol-mapper-detail.html',
             resolve : {
                 realm : function(RealmLoader) {
                     return RealmLoader();
                 },
-                application : function(ApplicationLoader) {
-                    return ApplicationLoader();
+                client : function(ClientLoader) {
+                    return ClientLoader();
                 },
                 serverInfo : function(ServerInfoLoader) {
                     return ServerInfoLoader();
                 },
-                mapper : function(ApplicationProtocolMapperLoader) {
-                    return ApplicationProtocolMapperLoader();
+                mapper : function(ClientProtocolMapperLoader) {
+                    return ClientProtocolMapperLoader();
                 }
 
             },
-            controller : 'ApplicationProtocolMapperCtrl'
+            controller : 'ClientProtocolMapperCtrl'
         })
-        .when('/create/application/:realm/:application/mappers', {
+        .when('/create/client/:realm/:client/mappers', {
             templateUrl : resourceUrl + '/partials/protocol-mapper-detail.html',
             resolve : {
                 realm : function(RealmLoader) {
@@ -506,297 +573,231 @@ module.config([ '$routeProvider', function($routeProvider) {
                 serverInfo : function(ServerInfoLoader) {
                     return ServerInfoLoader();
                 },
-                application : function(ApplicationLoader) {
-                    return ApplicationLoader();
+                client : function(ClientLoader) {
+                    return ClientLoader();
                 }
             },
-            controller : 'ApplicationProtocolMapperCreateCtrl'
+            controller : 'ClientProtocolMapperCreateCtrl'
         })
-
-        .when('/realms/:realm/oauth-clients/:oauth/mappers', {
-                templateUrl : resourceUrl + '/partials/oauth-client-mappers.html',
-                resolve : {
-                    realm : function(RealmLoader) {
-                        return RealmLoader();
-                    },
-                    oauth : function(OAuthClientLoader) {
-                        return OAuthClientLoader();
-                    },
-                    serverInfo : function(ServerInfoLoader) {
-                        return ServerInfoLoader();
-                    }
-                },
-                controller : 'OAuthClientProtocolMapperListCtrl'
-            })
-            .when('/realms/:realm/oauth-clients/:oauth/add-mappers', {
-                templateUrl : resourceUrl + '/partials/oauth-client-mappers-add.html',
-                resolve : {
-                    realm : function(RealmLoader) {
-                        return RealmLoader();
-                    },
-                    oauth : function(OAuthClientLoader) {
-                        return OAuthClientLoader();
-                    },
-                    serverInfo : function(ServerInfoLoader) {
-                        return ServerInfoLoader();
-                    }
-                },
-                controller : 'OAuthClientAddBuiltinProtocolMapperCtrl'
-            })
-            .when('/realms/:realm/oauth-clients/:oauth/mappers/:id', {
-                templateUrl : resourceUrl + '/partials/oauth-client-protocol-mapper-detail.html',
-                resolve : {
-                    realm : function(RealmLoader) {
-                        return RealmLoader();
-                    },
-                    oauth : function(OAuthClientLoader) {
-                        return OAuthClientLoader();
-                    },
-                    serverInfo : function(ServerInfoLoader) {
-                        return ServerInfoLoader();
-                    },
-                    mapper : function(OAuthClientProtocolMapperLoader) {
-                        return OAuthClientProtocolMapperLoader();
-                    }
-
-                },
-                controller : 'OAuthClientProtocolMapperCtrl'
-            })
-            .when('/create/oauth-client/:realm/:oauth/mappers', {
-                templateUrl : resourceUrl + '/partials/oauth-client-protocol-mapper-detail.html',
-                resolve : {
-                    realm : function(RealmLoader) {
-                        return RealmLoader();
-                    },
-                    serverInfo : function(ServerInfoLoader) {
-                        return ServerInfoLoader();
-                    },
-                    oauth : function(OAuthClientLoader) {
-                        return OAuthClientLoader();
-                    }
-                },
-                controller : 'OAuthClientProtocolMapperCreateCtrl'
-            })
-
-        .when('/realms/:realm/applications/:application/sessions', {
-            templateUrl : resourceUrl + '/partials/application-sessions.html',
+        .when('/realms/:realm/clients/:client/sessions', {
+            templateUrl : resourceUrl + '/partials/client-sessions.html',
             resolve : {
                 realm : function(RealmLoader) {
                     return RealmLoader();
                 },
-                application : function(ApplicationLoader) {
-                    return ApplicationLoader();
+                client : function(ClientLoader) {
+                    return ClientLoader();
                 },
-                sessionCount : function(ApplicationSessionCountLoader) {
-                    return ApplicationSessionCountLoader();
+                sessionCount : function(ClientSessionCountLoader) {
+                    return ClientSessionCountLoader();
                 }
             },
-            controller : 'ApplicationSessionsCtrl'
+            controller : 'ClientSessionsCtrl'
         })
-        .when('/realms/:realm/applications/:application/credentials', {
-            templateUrl : resourceUrl + '/partials/application-credentials.html',
+        .when('/realms/:realm/clients/:client/credentials', {
+            templateUrl : resourceUrl + '/partials/client-credentials.html',
             resolve : {
                 realm : function(RealmLoader) {
                     return RealmLoader();
                 },
-                application : function(ApplicationLoader) {
-                    return ApplicationLoader();
+                client : function(ClientLoader) {
+                    return ClientLoader();
                 }
             },
-            controller : 'ApplicationCredentialsCtrl'
+            controller : 'ClientCredentialsCtrl'
         })
-        .when('/realms/:realm/applications/:application/identity-provider', {
-            templateUrl : resourceUrl + '/partials/application-identity-provider.html',
+        .when('/realms/:realm/clients/:client/identity-provider', {
+            templateUrl : resourceUrl + '/partials/client-identity-provider.html',
             resolve : {
                 realm : function(RealmLoader) {
                     return RealmLoader();
                 },
-                application : function(ApplicationLoader) {
-                    return ApplicationLoader();
+                client : function(ClientLoader) {
+                    return ClientLoader();
                 }
             },
-            controller : 'ApplicationIdentityProviderCtrl'
+            controller : 'ClientIdentityProviderCtrl'
         })
-        .when('/realms/:realm/applications/:application/clustering', {
-            templateUrl : resourceUrl + '/partials/application-clustering.html',
+        .when('/realms/:realm/clients/:client/clustering', {
+            templateUrl : resourceUrl + '/partials/client-clustering.html',
             resolve : {
                 realm : function(RealmLoader) {
                     return RealmLoader();
                 },
-                application : function(ApplicationLoader) {
-                    return ApplicationLoader();
+                client : function(ClientLoader) {
+                    return ClientLoader();
                 }
             },
-            controller : 'ApplicationClusteringCtrl'
+            controller : 'ClientClusteringCtrl'
         })
-        .when('/register-node/realms/:realm/applications/:application/clustering', {
-            templateUrl : resourceUrl + '/partials/application-clustering-node.html',
+        .when('/register-node/realms/:realm/clients/:client/clustering', {
+            templateUrl : resourceUrl + '/partials/client-clustering-node.html',
             resolve : {
                 realm : function(RealmLoader) {
                     return RealmLoader();
                 },
-                application : function(ApplicationLoader) {
-                    return ApplicationLoader();
+                client : function(ClientLoader) {
+                    return ClientLoader();
                 }
             },
-            controller : 'ApplicationClusteringNodeCtrl'
+            controller : 'ClientClusteringNodeCtrl'
         })
-        .when('/realms/:realm/applications/:application/clustering/:node', {
-            templateUrl : resourceUrl + '/partials/application-clustering-node.html',
+        .when('/realms/:realm/clients/:client/clustering/:node', {
+            templateUrl : resourceUrl + '/partials/client-clustering-node.html',
             resolve : {
                 realm : function(RealmLoader) {
                     return RealmLoader();
                 },
-                application : function(ApplicationLoader) {
-                    return ApplicationLoader();
+                client : function(ClientLoader) {
+                    return ClientLoader();
                 }
             },
-            controller : 'ApplicationClusteringNodeCtrl'
+            controller : 'ClientClusteringNodeCtrl'
         })
-        .when('/realms/:realm/applications/:application/saml/keys', {
-            templateUrl : resourceUrl + '/partials/application-saml-keys.html',
+        .when('/realms/:realm/clients/:client/saml/keys', {
+            templateUrl : resourceUrl + '/partials/client-saml-keys.html',
             resolve : {
                 realm : function(RealmLoader) {
                     return RealmLoader();
                 },
-                application : function(ApplicationLoader) {
-                    return ApplicationLoader();
+                client : function(ClientLoader) {
+                    return ClientLoader();
                 }
             },
-            controller : 'ApplicationSamlKeyCtrl'
+            controller : 'ClientSamlKeyCtrl'
         })
-        .when('/realms/:realm/applications/:application/saml/:keyType/import/:attribute', {
-            templateUrl : resourceUrl + '/partials/application-saml-key-import.html',
+        .when('/realms/:realm/clients/:client/saml/:keyType/import/:attribute', {
+            templateUrl : resourceUrl + '/partials/client-saml-key-import.html',
             resolve : {
                 realm : function(RealmLoader) {
                     return RealmLoader();
                 },
-                application : function(ApplicationLoader) {
-                    return ApplicationLoader();
+                client : function(ClientLoader) {
+                    return ClientLoader();
                 }
             },
-            controller : 'ApplicationCertificateImportCtrl'
+            controller : 'ClientCertificateImportCtrl'
         })
-        .when('/realms/:realm/applications/:application/saml/:keyType/export/:attribute', {
-            templateUrl : resourceUrl + '/partials/application-saml-key-export.html',
+        .when('/realms/:realm/clients/:client/saml/:keyType/export/:attribute', {
+            templateUrl : resourceUrl + '/partials/client-saml-key-export.html',
             resolve : {
                 realm : function(RealmLoader) {
                     return RealmLoader();
                 },
-                application : function(ApplicationLoader) {
-                    return ApplicationLoader();
+                client : function(ClientLoader) {
+                    return ClientLoader();
                 }
             },
-            controller : 'ApplicationCertificateExportCtrl'
+            controller : 'ClientCertificateExportCtrl'
         })
-        .when('/realms/:realm/applications/:application/roles', {
-            templateUrl : resourceUrl + '/partials/application-role-list.html',
+        .when('/realms/:realm/clients/:client/roles', {
+            templateUrl : resourceUrl + '/partials/client-role-list.html',
             resolve : {
                 realm : function(RealmLoader) {
                     return RealmLoader();
                 },
-                application : function(ApplicationLoader) {
-                    return ApplicationLoader();
+                client : function(ClientLoader) {
+                    return ClientLoader();
                 },
-                roles : function(ApplicationRoleListLoader) {
-                    return ApplicationRoleListLoader();
+                roles : function(ClientRoleListLoader) {
+                    return ClientRoleListLoader();
                 }
             },
-            controller : 'ApplicationRoleListCtrl'
+            controller : 'ClientRoleListCtrl'
         })
-        .when('/realms/:realm/applications/:application/revocation', {
-            templateUrl : resourceUrl + '/partials/application-revocation.html',
+        .when('/realms/:realm/clients/:client/revocation', {
+            templateUrl : resourceUrl + '/partials/client-revocation.html',
             resolve : {
                 realm : function(RealmLoader) {
                     return RealmLoader();
                 },
-                application : function(ApplicationLoader) {
-                    return ApplicationLoader();
+                client : function(ClientLoader) {
+                    return ClientLoader();
                 }
             },
-            controller : 'ApplicationRevocationCtrl'
+            controller : 'ClientRevocationCtrl'
         })
-        .when('/realms/:realm/applications/:application/scope-mappings', {
-            templateUrl : resourceUrl + '/partials/application-scope-mappings.html',
+        .when('/realms/:realm/clients/:client/scope-mappings', {
+            templateUrl : resourceUrl + '/partials/client-scope-mappings.html',
             resolve : {
                 realm : function(RealmLoader) {
                     return RealmLoader();
                 },
-                application : function(ApplicationLoader) {
-                    return ApplicationLoader();
+                client : function(ClientLoader) {
+                    return ClientLoader();
                 },
-                applications : function(ApplicationListLoader) {
-                    return ApplicationListLoader();
+                clients : function(ClientListLoader) {
+                    return ClientListLoader();
                 }
             },
-            controller : 'ApplicationScopeMappingCtrl'
+            controller : 'ClientScopeMappingCtrl'
         })
-        .when('/realms/:realm/applications/:application/installation', {
-            templateUrl : resourceUrl + '/partials/application-installation.html',
+        .when('/realms/:realm/clients/:client/installation', {
+            templateUrl : resourceUrl + '/partials/client-installation.html',
             resolve : {
                 realm : function(RealmLoader) {
                     return RealmLoader();
                 },
-                application : function(ApplicationLoader) {
-                    return ApplicationLoader();
+                client : function(ClientLoader) {
+                    return ClientLoader();
                 }
             },
-            controller : 'ApplicationInstallationCtrl'
+            controller : 'ClientInstallationCtrl'
         })
-        .when('/create/application/:realm', {
-            templateUrl : resourceUrl + '/partials/application-detail.html',
+        .when('/create/client/:realm', {
+            templateUrl : resourceUrl + '/partials/client-detail.html',
             resolve : {
                 realm : function(RealmLoader) {
                     return RealmLoader();
                 },
-                applications : function(ApplicationListLoader) {
-                    return ApplicationListLoader();
+                clients : function(ClientListLoader) {
+                    return ClientListLoader();
                 },
-                application : function() {
+                client : function() {
                     return {};
                 },
                 serverInfo : function(ServerInfoLoader) {
                     return ServerInfoLoader();
                 }
             },
-            controller : 'ApplicationDetailCtrl'
+            controller : 'ClientDetailCtrl'
         })
-        .when('/realms/:realm/applications/:application', {
-            templateUrl : resourceUrl + '/partials/application-detail.html',
+        .when('/realms/:realm/clients/:client', {
+            templateUrl : resourceUrl + '/partials/client-detail.html',
             resolve : {
                 realm : function(RealmLoader) {
                     return RealmLoader();
                 },
-                applications : function(ApplicationListLoader) {
-                    return ApplicationListLoader();
+                clients : function(ClientListLoader) {
+                    return ClientListLoader();
                 },
-                application : function(ApplicationLoader) {
-                    return ApplicationLoader();
+                client : function(ClientLoader) {
+                    return ClientLoader();
                 },
                 serverInfo : function(ServerInfoLoader) {
                     return ServerInfoLoader();
                 }
             },
-            controller : 'ApplicationDetailCtrl'
+            controller : 'ClientDetailCtrl'
         })
-        .when('/realms/:realm/applications', {
-            templateUrl : resourceUrl + '/partials/application-list.html',
+        .when('/realms/:realm/clients', {
+            templateUrl : resourceUrl + '/partials/client-list.html',
             resolve : {
                 realm : function(RealmLoader) {
                     return RealmLoader();
                 },
-                applications : function(ApplicationListLoader) {
-                    return ApplicationListLoader();
+                clients : function(ClientListLoader) {
+                    return ClientListLoader();
                 },
                 serverInfo : function(ServerInfoLoader) {
                     return ServerInfoLoader();
                 }
 
             },
-            controller : 'ApplicationListCtrl'
+            controller : 'ClientListCtrl'
         })
-        .when('/import/application/:realm', {
-            templateUrl : resourceUrl + '/partials/application-import.html',
+        .when('/import/client/:realm', {
+            templateUrl : resourceUrl + '/partials/client-import.html',
             resolve : {
                 realm : function(RealmLoader) {
                     return RealmLoader();
@@ -805,129 +806,8 @@ module.config([ '$routeProvider', function($routeProvider) {
                     return ServerInfoLoader();
                 }
             },
-            controller : 'ApplicationImportCtrl'
+            controller : 'ClientImportCtrl'
         })
-
-        // OAUTH Client
-
-        .when('/realms/:realm/oauth-clients/:oauth/claims', {
-            templateUrl : resourceUrl + '/partials/oauth-client-claims.html',
-            resolve : {
-                realm : function(RealmLoader) {
-                    return RealmLoader();
-                },
-                oauth : function(OAuthClientLoader) {
-                    return OAuthClientLoader();
-                },
-                claims : function(OAuthClientClaimsLoader) {
-                    return OAuthClientClaimsLoader();
-                }
-            },
-            controller : 'OAuthClientClaimsCtrl'
-        })
-        .when('/realms/:realm/oauth-clients/:oauth/revocation', {
-            templateUrl : resourceUrl + '/partials/oauth-client-revocation.html',
-            resolve : {
-                realm : function(RealmLoader) {
-                    return RealmLoader();
-                },
-                oauth : function(OAuthClientLoader) {
-                    return OAuthClientLoader();
-                }
-            },
-            controller : 'OAuthClientRevocationCtrl'
-        })
-        .when('/realms/:realm/oauth-clients/:oauth/credentials', {
-            templateUrl : resourceUrl + '/partials/oauth-client-credentials.html',
-            resolve : {
-                realm : function(RealmLoader) {
-                    return RealmLoader();
-                },
-                oauth : function(OAuthClientLoader) {
-                    return OAuthClientLoader();
-                }
-            },
-            controller : 'OAuthClientCredentialsCtrl'
-        })
-        .when('/realms/:realm/oauth-clients/:oauth/scope-mappings', {
-            templateUrl : resourceUrl + '/partials/oauth-client-scope-mappings.html',
-            resolve : {
-                realm : function(RealmLoader) {
-                    return RealmLoader();
-                },
-                oauth : function(OAuthClientLoader) {
-                    return OAuthClientLoader();
-                },
-                applications : function(ApplicationListLoader) {
-                    return ApplicationListLoader();
-                }
-            },
-            controller : 'OAuthClientScopeMappingCtrl'
-        })
-        .when('/realms/:realm/oauth-clients/:oauth/installation', {
-            templateUrl : resourceUrl + '/partials/oauth-client-installation.html',
-            resolve : {
-                realm : function(RealmLoader) {
-                    return RealmLoader();
-                },
-                oauth : function(OAuthClientLoader) {
-                    return OAuthClientLoader();
-                },
-                installation : function(OAuthClientInstallationLoader) {
-                    return OAuthClientInstallationLoader();
-                }
-            },
-            controller : 'OAuthClientInstallationCtrl'
-        })
-        .when('/create/oauth-client/:realm', {
-            templateUrl : resourceUrl + '/partials/oauth-client-detail.html',
-            resolve : {
-                realm : function(RealmLoader) {
-                    return RealmLoader();
-                },
-                oauth : function() {
-                    return {};
-                }
-            },
-            controller : 'OAuthClientDetailCtrl'
-        })
-        .when('/realms/:realm/oauth-clients/:oauth', {
-            templateUrl : resourceUrl + '/partials/oauth-client-detail.html',
-            resolve : {
-                realm : function(RealmLoader) {
-                    return RealmLoader();
-                },
-                oauth : function(OAuthClientLoader) {
-                    return OAuthClientLoader();
-                }
-            },
-            controller : 'OAuthClientDetailCtrl'
-        })
-        .when('/realms/:realm/oauth-clients/:oauth/identity-provider', {
-            templateUrl : resourceUrl + '/partials/oauth-client-identity-provider.html',
-            resolve : {
-                realm : function(RealmLoader) {
-                    return RealmLoader();
-                },
-                oauth : function(OAuthClientLoader) {
-                    return OAuthClientLoader();
-                }
-            },
-            controller : 'OAuthClientIdentityProviderCtrl'
-        })
-        .when('/realms/:realm/oauth-clients', {
-            templateUrl : resourceUrl + '/partials/oauth-client-list.html',
-            resolve : {
-                realm : function(RealmLoader) {
-                    return RealmLoader();
-                },
-                oauthClients : function(OAuthClientListLoader) {
-                    return OAuthClientListLoader();
-                }
-            },
-            controller : 'OAuthClientListCtrl'
-        })
-
         .when('/', {
             templateUrl : resourceUrl + '/partials/home.html',
             controller : 'HomeCtrl'
@@ -959,8 +839,8 @@ module.config([ '$routeProvider', function($routeProvider) {
                 realm : function(RealmLoader) {
                     return RealmLoader();
                 },
-                stats : function(RealmApplicationSessionStatsLoader) {
-                    return RealmApplicationSessionStatsLoader();
+                stats : function(RealmClientSessionStatsLoader) {
+                    return RealmClientSessionStatsLoader();
                 }
             },
             controller : 'RealmSessionStatsCtrl'
@@ -1095,8 +975,6 @@ module.config([ '$routeProvider', function($routeProvider) {
             },
             controller : 'ProtocolListCtrl'
         })
-
-
         .when('/server-info', {
             templateUrl : resourceUrl + '/partials/server-info.html'
         })
@@ -1104,8 +982,14 @@ module.config([ '$routeProvider', function($routeProvider) {
             templateUrl : resourceUrl + '/partials/home.html',
             controller : 'LogoutCtrl'
         })
-        .otherwise({
+        .when('/notfound', {
             templateUrl : resourceUrl + '/partials/notfound.html'
+        })
+        .when('/forbidden', {
+            templateUrl : resourceUrl + '/partials/forbidden.html'
+        })
+        .otherwise({
+            templateUrl : resourceUrl + '/partials/pagenotfound.html'
         });
 } ]);
 
@@ -1127,29 +1011,6 @@ module.config(function($httpProvider) {
     $httpProvider.responseInterceptors.push('spinnerInterceptor');
     $httpProvider.interceptors.push('authInterceptor');
 
-});
-
-module.factory('errorInterceptor', function($q, $window, $rootScope, $location, Notifications, Auth) {
-    return function(promise) {
-        return promise.then(function(response) {
-            return response;
-        }, function(response) {
-            if (response.status == 401) {
-                Auth.authz.logout();
-             } else if (response.status == 403) {
-                Notifications.error("Forbidden");
-            } else if (response.status == 404) {
-                Notifications.error("Not found");
-            } else if (response.status) {
-                if (response.data && response.data.errorMessage) {
-                    Notifications.error(response.data.errorMessage);
-                } else {
-                    Notifications.error("An unexpected server error has occurred");
-                }
-            }
-            return $q.reject(response);
-        });
-    };
 });
 
 module.factory('spinnerInterceptor', function($q, $window, $rootScope, $location) {
@@ -1179,6 +1040,29 @@ module.factory('spinnerInterceptor', function($q, $window, $rootScope, $location
     };
 });
 
+module.factory('errorInterceptor', function($q, $window, $rootScope, $location, Notifications, Auth) {
+    return function(promise) {
+        return promise.then(function(response) {
+            return response;
+        }, function(response) {
+            if (response.status == 401) {
+                Auth.authz.logout();
+            } else if (response.status == 403) {
+                $location.path('/forbidden');
+            } else if (response.status == 404) {
+                $location.path('/notfound');
+            } else if (response.status) {
+                if (response.data && response.data.errorMessage) {
+                    Notifications.error(response.data.errorMessage);
+                } else {
+                    Notifications.error("An unexpected server error has occurred");
+                }
+            }
+            return $q.reject(response);
+        });
+    };
+});
+
 // collapsable form fieldsets
 module.directive('collapsable', function() {
     return function(scope, element, attrs) {
@@ -1194,11 +1078,9 @@ module.directive('collapsable', function() {
 // collapsable form fieldsets
 module.directive('uncollapsed', function() {
     return function(scope, element, attrs) {
-        element.prepend('<span class="kc-icon-collapse toggle-icons">Icon: collapse</span>');
+        element.prepend('<i class="toggle-class fa fa-angle-down"></i> ');
         element.click(function() {
-            $(this).toggleClass('collapsed');
-            $(this).find('.toggle-icons').toggleClass('kc-icon-collapse').toggleClass('kc-icon-expand');
-            $(this).find('.toggle-icons').text($(this).text() == "Icon: expand" ? "Icon: collapse" : "Icon: expand");
+            $(this).find('.toggle-class').toggleClass('fa-angle-down').toggleClass('fa-angle-right');
             $(this).parent().find('.form-group').toggleClass('hidden');
         });
     }
@@ -1207,12 +1089,10 @@ module.directive('uncollapsed', function() {
 // collapsable form fieldsets
 module.directive('collapsed', function() {
     return function(scope, element, attrs) {
-        element.prepend('<span class="kc-icon-expand toggle-icons">Icon: expand</span>');
+        element.prepend('<i class="toggle-class fa fa-angle-right"></i> ');
         element.parent().find('.form-group').toggleClass('hidden');
         element.click(function() {
-            $(this).toggleClass('collapsed');
-            $(this).find('.toggle-icons').toggleClass('kc-icon-collapse').toggleClass('kc-icon-expand');
-            $(this).find('.toggle-icons').text($(this).text() == "Icon: expand" ? "Icon: collapse" : "Icon: expand");
+            $(this).find('.toggle-class').toggleClass('fa-angle-down').toggleClass('fa-angle-right');
             $(this).parent().find('.form-group').toggleClass('hidden');
         });
     }
@@ -1398,7 +1278,7 @@ module.directive('kcSave', function ($compile, Notifications) {
     return {
         restrict: 'A',
         link: function ($scope, elem, attr, ctrl) {
-            elem.addClass("btn btn-primary btn-lg");
+            elem.addClass("btn btn-primary");
             elem.attr("type","submit");
             elem.bind('click', function() {
                 $scope.$apply(function() {
@@ -1429,7 +1309,7 @@ module.directive('kcReset', function ($compile, Notifications) {
     return {
         restrict: 'A',
         link: function ($scope, elem, attr, ctrl) {
-            elem.addClass("btn btn-default btn-lg");
+            elem.addClass("btn btn-default");
             elem.attr("type","submit");
             elem.bind('click', function() {
                 $scope.$apply(function() {
@@ -1449,7 +1329,7 @@ module.directive('kcCancel', function ($compile, Notifications) {
     return {
         restrict: 'A',
         link: function ($scope, elem, attr, ctrl) {
-            elem.addClass("btn btn-default btn-lg");
+            elem.addClass("btn btn-default");
             elem.attr("type","submit");
         }
     }
@@ -1459,7 +1339,7 @@ module.directive('kcDelete', function ($compile, Notifications) {
     return {
         restrict: 'A',
         link: function ($scope, elem, attr, ctrl) {
-            elem.addClass("btn btn-danger btn-lg");
+            elem.addClass("btn btn-danger");
             elem.attr("type","submit");
         }
     }
@@ -1525,36 +1405,48 @@ module.directive('kcReadOnly', function() {
     return d;
 });
 
-module.directive('kcNavigation', function ($compile, Notifications) {
+module.directive('kcMenu', function () {
     return {
         scope: true,
         restrict: 'E',
         replace: true,
-        templateUrl: resourceUrl + '/templates/kc-navigation.html',
-
-        compile: function(element, attrs){
-            if (!attrs.kcSocial) {
-                attrs.kcSocial = false;
-            }
-        }
+        templateUrl: resourceUrl + '/templates/kc-menu.html'
     }
 });
 
-module.directive('kcNavigationApplication', function () {
+module.directive('kcTabsRealm', function () {
     return {
         scope: true,
         restrict: 'E',
         replace: true,
-        templateUrl: resourceUrl + '/templates/kc-navigation-application.html'
+        templateUrl: resourceUrl + '/templates/kc-tabs-realm.html'
     }
 });
 
-module.directive('kcNavigationOauthClient', function () {
+module.directive('kcTabsUser', function () {
     return {
         scope: true,
         restrict: 'E',
         replace: true,
-        templateUrl: resourceUrl + '/templates/kc-navigation-oauth-client.html'
+        templateUrl: resourceUrl + '/templates/kc-tabs-user.html'
+    }
+});
+
+module.directive('kcTabsClient', function () {
+    return {
+        scope: true,
+        restrict: 'E',
+        replace: true,
+        templateUrl: resourceUrl + '/templates/kc-tabs-client.html'
+    }
+});
+
+module.directive('kcNavigationUser', function () {
+    return {
+        scope: true,
+        restrict: 'E',
+        replace: true,
+        templateUrl: resourceUrl + '/templates/kc-navigation-user.html'
     }
 });
 
@@ -1641,4 +1533,53 @@ module.filter('capitalize', function() {
         };
         return result;
     };
+});
+
+module.directive('kcSidebarResize', function ($window) {
+    return function (scope, element) {
+        function resize() {
+            var navBar = angular.element(document.getElementsByClassName('navbar-pf')).height();
+            var container = angular.element(document.getElementById("view").getElementsByTagName("div")[0]).height();
+            var height = Math.max(container, window.innerHeight - navBar - 3);
+
+            element[0].style['min-height'] = height + 'px';
+        }
+
+        resize();
+
+        var w = angular.element($window);
+        scope.$watch(function () {
+            return {
+                'h': window.innerHeight,
+                'w': window.innerWidth
+            };
+        }, function () {
+            resize();
+        }, true);
+        w.bind('resize', function () {
+            scope.$apply();
+        });
+    }
+});
+
+
+
+module.directive('kcTooltip', function($compile) {
+        return {
+            restrict: 'E',
+            replace: false,
+            terminal: true,
+            priority: 1000,
+            link: function link(scope,element, attrs) {
+                var angularElement = angular.element(element[0]);
+                var tooltip = angularElement.text();
+                angularElement.text('');
+                element.addClass('hidden');
+
+                var label = angular.element(element.parent().children()[0]);
+                label.append(' <i class="fa fa-question-circle text-muted" tooltip="' + tooltip + '" tooltip-placement="right"></i>');
+
+                $compile(label)(scope);
+            }
+        };
 });
