@@ -4,7 +4,7 @@
 
 <module xmlns="urn:jboss:module:1.1" name="org.keycloak.keycloak-services">
     <resources>
-        <resource-root path="keycloak-services-1.2.0.Beta1.jar"/>
+        <resource-root path="keycloak-services-1.2.0.CR1.jar"/>
         <!-- Insert resources here -->
     </resources>
     <dependencies>
@@ -15,6 +15,7 @@
         <module name="org.keycloak.keycloak-broker-saml" services="import"/>
         <module name="org.keycloak.keycloak-connections-infinispan" services="import"/>
         <module name="org.keycloak.keycloak-connections-jpa" services="import"/>
+        <module name="org.keycloak.keycloak-connections-http-client" services="import"/>
         <module name="org.keycloak.keycloak-connections-jpa-liquibase" services="import"/>
         <module name="org.keycloak.keycloak-connections-mongo" services="import"/>
         <module name="org.keycloak.keycloak-connections-mongo-update" services="import"/>
@@ -50,10 +51,8 @@
         <module name="org.keycloak.keycloak-model-sessions-jpa" services="import"/>
         <module name="org.keycloak.keycloak-model-sessions-mem" services="import"/>
         <module name="org.keycloak.keycloak-model-sessions-mongo" services="import"/>
-        <module name="org.keycloak.keycloak-picketlink-api" services="import"/>
         <module name="org.keycloak.keycloak-wildfly-extensions" services="import"/>
 
-        <module name="org.keycloak.keycloak-picketlink-ldap" services="import"/>
         <module name="org.keycloak.keycloak-saml-protocol" services="import"/>
         <module name="org.keycloak.keycloak-services" export="true" services="import"/>
         <module name="org.keycloak.keycloak-social-core" services="import"/>
@@ -68,7 +67,6 @@
 
         <module name="javax.ws.rs.api"/>
         <module name="org.jboss.resteasy.resteasy-jaxrs"/>
-        <module name="org.jboss.resteasy.resteasy-crypto"/>
         <module name="org.jboss.resteasy.resteasy-multipart-provider"/>
         <module name="javax.servlet.api"/>
         <module name="org.codehaus.jackson.jackson-core-asl"/>
@@ -81,7 +79,7 @@
         <module name="net.iharder.base64"/>
         <module name="javax.api"/>
         <module name="javax.activation.api"/>
-        <module name="org.apache.httpcomponents"/>
+        <module name="org.apache.httpcomponents" slot="4.3" />
     </dependencies>
 
 </module>

@@ -4,11 +4,12 @@
 
 <module xmlns="urn:jboss:module:1.1" name="org.keycloak.keycloak-saml-protocol">
     <resources>
-        <resource-root path="keycloak-saml-protocol-1.2.0.Beta1.jar"/>
+        <resource-root path="keycloak-saml-protocol-1.2.0.CR1.jar"/>
         <!-- Insert resources here -->
     </resources>
     <dependencies>
         <module name="org.keycloak.keycloak-core"/>
+        <module name="org.keycloak.keycloak-saml-core"/>
         <module name="org.keycloak.keycloak-model-api"/>
         <module name="org.keycloak.keycloak-events-api"/>
         <module name="org.keycloak.keycloak-account-api"/>
@@ -16,15 +17,12 @@
         <module name="org.keycloak.keycloak-login-api"/>
         <module name="org.keycloak.keycloak-services"/>
         <module name="org.keycloak.keycloak-forms-common-freemarker"/>
-        <module name="org.apache.httpcomponents" />
+        <module name="org.apache.httpcomponents" slot="4.3" />
         <module name="org.jboss.logging"/>
-        <module name="org.picketlink.common"/>
-        <module name="org.picketlink.federation"/>
-
         <module name="javax.ws.rs.api"/>
         <module name="org.jboss.resteasy.resteasy-jaxrs"/>
-        <module name="org.jboss.resteasy.resteasy-crypto"/>
         <module name="org.jboss.resteasy.resteasy-multipart-provider"/>
+        <module name="org.keycloak.keycloak-connections-http-client" services="import"/>
 
         <module name="javax.api"/>
     </dependencies>
